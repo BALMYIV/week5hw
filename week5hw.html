@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trivia Game</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        body {
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="container">
+        <div class ='row'>
+            <div style="background-color: #4aaaa5" class="col-xs-10 col-xs-offset-1 text-center">
+                <h1 class ="jumbotron"> Totally Exciting Hardest Trifles Ever</h1>
+                <br>
+
+                <div class=" start btn btn-button btn-danger btn-large">Start</div>
+                <br>
+                <br>
+                <div class="timeRemaining"> Time Remaining <span id="timer"></span></div>
+                <br>
+                <div class="question"></div>
+                <div class = "q1 answers"></div>
+                <div class = "q2 answers"></div>
+                <div class = "q3 answers"></div>
+                <div class = "q4 answers"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+    <script class="text/javascript">
+
+
+            var questions = [["When did I go to bed last night?"],
+                ["When did I wake up this morning?"],
+                ["What is my current method of coffee sweetener?"],
+                ["Who/what is my favorite Van?"],
+                ["How often do I walk to the grocery store each week?"]];
+
+            var answers = [
+                ["11:30pm", "1am", "3am", "8pm?"],
+                ["7am", "9am", "11:30", "exactly 7 hours from lights out"],
+                ["Sweet Italian Creme", "Hazelnut", "Domino Sugar Cubes", "Sweetness is Weakness"],
+                ["Dodge/Mercedes Sprinter Van 158inch 1 ton", " Van Morrison", "Vincent Van", "Ludwig Van"],
+                ["0 like normal people", "1 like a hipster", "2 like a neighborhood lady", "5 times, because I need breaks from staring at my screen"]];
+
+            var photos = [['https://voiceformygeneration.files.wordpress.com/2013/08/3amfriends.jpg'],
+                            ['https://i.ytimg.com/vi/4JeHi-yJVgo/maxresdefault.jpg'],
+                           ['http://blog.gruborpub.com/wp-content/uploads/2016/01/PD_01.jpg'],
+                            ['http://johngushue.typepad.com/photos/uncategorized/2008/04/13/van_morrison_illustration_from_roll.jpg'],
+                            ['https://i.ytimg.com/vi/V-DdBAu6l5w/maxresdefault.jpg']];
+
+            var key = [ 2, 3, 2, 1, 3];
+            var countDown;
+            var counter = 0;
+            var noAnswer = 0;
+            var rightAnswer = 0;
+            var wrongAnswer = 0;
+            var answer;
+            var timer1 = function timeout(){
+                setInterval(timer,1000);
+            };
+            //interval = setInterval(timer,1000);
+
+
+
+            $(".start").click(startClock);
+
+            function startClock() {
+
+                countDown = 0;
+                $(".start").hide("click");
+
+                $(".timeRemaining").show("click");
+
+                countDown = 20;
+
+                timer1();
+
+                clearInterval(timer1);
+
+
+
+                $(".question").html(questions[counter]);
+                $(".q1").html(answers[counter][0]);
+                $(".q2").html(answers[counter][1]);
+                $(".q3").html(answers[counter][2]);
+                $(".q4").html(answers[counter][3]);
+
+            }
+
+            function timer() {
+                --countDown;
+                $('#timer').html(countDown);
+            }
+
+
+            function viewAnswer() {
+                counter++;
+                if (counter === 5){
+                    $(".timeRemaining").hide("click");
+                    gameSummary();
+                }
+                else {$(".timeRemaining").hide("click");
+                setTimeout(startClock, 4000);}
+            }
+
+            function gameSummary() {
+
+                $(".question").html('');
+                $(".q1").html("Unanswered " + noAnswer);
+                $(".q2").html("Right Answers " + rightAnswer);
+                $(".q3").html("Wrong Answers " + wrongAnswer);
+                $(".q4").html('');
+
+            }
+
+
+            $('.answers').click(function quiz() {
+                answer = $(this).html();
+                console.log(answer);
+                $(".question").html('');
+                $(".q1").html('');
+                $(".q2").html("The answer is " + answers[counter][key[counter]]);
+                $(".q3").html("<img src=" + photos[counter] + " width='400px'  >");
+                $(".q4").html('');
+
+                if (countDown === 0) {
+                    $(".q1").html("Sorry Jones, you ran out of time");
+                    noAnswer++;
+                    viewAnswer()
+
+                } else if (answer === (answers[counter][key[counter]])) {
+                    $(".q1").html("You got it");
+                    rightAnswer++;
+                    viewAnswer()
+
+                } else { $(".q1").html("Nope!");
+                    wrongAnswer++;
+                    viewAnswer()
+                }
+
+
+            });
+
+    </script>
+
+</body>
+</html>
